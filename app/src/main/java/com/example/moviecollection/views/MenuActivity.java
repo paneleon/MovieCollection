@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -33,9 +34,32 @@ public class MenuActivity extends AppCompatActivity {
         menu.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, menuOptions));
 
         menu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            Intent intent = null;
+
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch(position){
+                    case 0:
+                        intent = new Intent(MenuActivity.this, MovieListActivity.class);
+                        break;
+                    case 1:
+                        intent = new Intent(MenuActivity.this, RecommendationsActivity.class);
+                        break;
+                    case 2:
+                        intent = new Intent(MenuActivity.this, MovieSearchActivity.class);
+                        break;
+                    case 3:
+                        intent = new Intent(MenuActivity.this, WatchedMoviesActivity.class);
+                        break;
+                    case 4:
+                        intent = new Intent(MenuActivity.this, FavoritesActivity.class);
+                        break;
+                    case 5:
+                        intent = new Intent(MenuActivity.this, SnacksActivity.class);
+                        break;
+                }
 
+                startActivity(intent);
             }
         });
     }

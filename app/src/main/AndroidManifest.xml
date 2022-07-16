@@ -14,19 +14,22 @@
         android:theme="@style/Theme.MovieCollection"
         tools:targetApi="31">
         <activity
-            android:name=".MovieSearchActivity"
+            android:name=".views.SnacksActivity"
             android:exported="false" />
         <activity
-            android:name=".RecommendationsActivity"
+            android:name=".views.MovieSearchActivity"
             android:exported="false" />
         <activity
-            android:name=".FavoritesActivity"
+            android:name=".views.RecommendationsActivity"
             android:exported="false" />
         <activity
-            android:name=".WatchedMoviesActivity"
+            android:name=".views.FavoritesActivity"
             android:exported="false" />
         <activity
-            android:name=".MovieListActivity"
+            android:name=".views.WatchedMoviesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".views.MovieListActivity"
             android:exported="false" />
         <activity
             android:name=".views.MenuActivity"
