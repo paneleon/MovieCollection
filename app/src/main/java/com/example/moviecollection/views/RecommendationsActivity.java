@@ -13,18 +13,15 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.moviecollection.R;
-import com.example.moviecollection.helpers.MovieListAdapter;
+import com.example.moviecollection.adapters.MovieListAdapter;
 import com.example.moviecollection.model.Movie;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 

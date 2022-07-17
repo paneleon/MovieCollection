@@ -7,12 +7,6 @@ public class Movie {
 
     boolean adult;
     List<Object> genres;
-
-//    array[object]
-//    optional
-//            id
-//    integer
-//            optional
     int id;
     String imdbId;
     String overview;
@@ -25,6 +19,9 @@ public class Movie {
     int voteAverage;
     int voteCount;
     String poster;
+
+    boolean favorite = false;
+    boolean watched = false;
 
     public Movie(){
 
@@ -63,5 +60,13 @@ public class Movie {
 
     public String getOverview() {
         return overview;
+    }
+
+    public void setFavorite(boolean fav){
+        this.favorite = fav;
+    }
+
+    public void setWatched(boolean watched){
+        this.watched = watched;
     }
 }

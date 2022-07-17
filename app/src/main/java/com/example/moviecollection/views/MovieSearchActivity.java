@@ -7,7 +7,6 @@ import androidx.fragment.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
@@ -18,7 +17,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.moviecollection.R;
-import com.example.moviecollection.helpers.MovieListAdapter;
 import com.example.moviecollection.model.Movie;
 
 import org.json.JSONArray;
@@ -71,7 +69,7 @@ public class MovieSearchActivity extends AppCompatActivity {
 
         System.out.println("title " + title);
 
-        String endpoint = String.format("https://api.themoviedb.org/3/search/movie?api_key=&query=%s", title);
+        String endpoint = String.format("https://api.themoviedb.org/3/search/movie?api_key={api_key}&query=%s", title);
         String endpoint2 = "https://api.themoviedb.org/3/search/movie?api_key={api_key}&query=Jack+Reacher";
 
         RequestQueue requestQueue;

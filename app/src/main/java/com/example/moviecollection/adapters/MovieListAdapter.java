@@ -1,4 +1,4 @@
-package com.example.moviecollection.helpers;
+package com.example.moviecollection.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;

@@ -1,6 +1,7 @@
 package com.example.moviecollection.views;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.moviecollection.R;
+import com.example.moviecollection.model.Movie;
+import com.example.moviecollection.viewmodel.MovieViewModel;
 
 public class MainActivity extends AppCompatActivity {
 

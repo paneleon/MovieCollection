@@ -1,6 +1,7 @@
 package com.example.moviecollection.views;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -8,13 +9,16 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.moviecollection.R;
-import com.example.moviecollection.helpers.MovieListAdapter;
+import com.example.moviecollection.adapters.MovieListAdapter;
 import com.example.moviecollection.model.Movie;
+import com.example.moviecollection.viewmodel.MovieViewModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class MovieListActivity extends AppCompatActivity {
+
+    MovieViewModel movieViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +28,12 @@ public class MovieListActivity extends AppCompatActivity {
         RecyclerView moviesRecyclerView = findViewById(R.id.movie_list);
 
         moviesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+
+        movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
+//        Movie m = new Movie("Test Movie");
+//        movieViewModel.insert(m);
+
 
         ArrayList<Movie> movieList = new ArrayList<Movie>(Arrays.asList(
                 new Movie("Movie 1"),
@@ -40,5 +50,7 @@ public class MovieListActivity extends AppCompatActivity {
             }
         });
         moviesRecyclerView.setAdapter(adapter);
+
+
     }
 }
