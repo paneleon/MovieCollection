@@ -1,6 +1,8 @@
 package com.example.moviecollection.views;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -22,9 +24,13 @@ import com.example.moviecollection.model.Movie;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class MovieSearchActivity extends AppCompatActivity {
 
     String searchText;
+    ArrayList<Movie> movies = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +47,23 @@ public class MovieSearchActivity extends AppCompatActivity {
             }
         });
 
+//    updateFragments();
+
+    }
+
+    private void updateFragments(){
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        for (Movie movie: movies) {
+            transaction.add(R.id.found_movies_container, new MovieFragment(movie), "TAG");
+        }
+        transaction.commitNow();
+
+    }
+
+    private void clearFragments(){
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
 
     }
 
@@ -48,7 +71,7 @@ public class MovieSearchActivity extends AppCompatActivity {
 
         System.out.println("title " + title);
 
-        String endpoint = String.format("https://api.themoviedb.org/3/search/movie?api_key={api_key}&query=%s", title);
+        String endpoint = String.format("https://api.themoviedb.org/3/search/movie?api_key=&query=%s", title);
         String endpoint2 = "https://api.themoviedb.org/3/search/movie?api_key={api_key}&query=Jack+Reacher";
 
         RequestQueue requestQueue;
@@ -66,12 +89,13 @@ public class MovieSearchActivity extends AppCompatActivity {
                         Log.d("my-api","==== "+ jsonObject.getString("title"));
                         Log.d("my-api","==== "+ jsonObject.getString("overview"));
                         Log.d("my-api","==== "+ jsonObject.getString("id"));
-//                        movieList.add(new Movie(Integer.parseInt(jsonObject.getString("id")),
-//                                        jsonObject.getString("title"),
-//                                        jsonObject.getString("overview")
-//                                )
-//                        );
+                        movies.add(new Movie(Integer.parseInt(jsonObject.getString("id")),
+                                        jsonObject.getString("title"),
+                                        jsonObject.getString("overview")
+                                )
+                        );
                     }
+                    updateFragments();
                 } catch (Exception e){
                     e.printStackTrace();
                 }

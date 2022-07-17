@@ -32,6 +32,12 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/found_movies_container"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 
 
 </LinearLayout>
