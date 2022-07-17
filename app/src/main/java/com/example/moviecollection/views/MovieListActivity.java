@@ -9,6 +9,10 @@ import android.view.View;
 
 import com.example.moviecollection.R;
 import com.example.moviecollection.helpers.MovieListAdapter;
+import com.example.moviecollection.model.Movie;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MovieListActivity extends AppCompatActivity {
 
@@ -17,20 +21,24 @@ public class MovieListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_list);
 
-        RecyclerView menuRecyclerView = findViewById(R.id.movie_list);
+        RecyclerView moviesRecyclerView = findViewById(R.id.movie_list);
 
-        menuRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        moviesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        String[] movieList = new String[]{"Movie 1", "Movie 2", "Movie 3"};
+        ArrayList<Movie> movieList = new ArrayList<Movie>(Arrays.asList(
+                new Movie("Movie 1"),
+                new Movie("Movie 2"),
+                new Movie("Movie 3")
+        ));
 
         MovieListAdapter adapter = new MovieListAdapter(movieList);
 
         adapter.setClickListener(new MovieListAdapter.ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                System.out.println(movieList[position]);
+                System.out.println(movieList.get(position));
             }
         });
-        menuRecyclerView.setAdapter(adapter);
+        moviesRecyclerView.setAdapter(adapter);
     }
 }

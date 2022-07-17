@@ -9,14 +9,23 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moviecollection.R;
+import com.example.moviecollection.model.Movie;
+
+import java.util.ArrayList;
 
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder> {
 
-    private String[] movies;
+//    private String[] movies;
+    private ArrayList<Movie> movies;
+
     private ItemClickListener clickListener;
 
-    public MovieListAdapter(String[] options){
-        this.movies = options;
+//    public MovieListAdapter(String[] options){
+//        this.movies = options;
+//    }
+
+    public MovieListAdapter(ArrayList<Movie> movies){
+        this.movies = movies;
     }
 
     @NonNull
@@ -28,12 +37,15 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.textView.setText(movies[position]);
+        Movie item = movies.get(position);
+//        holder.textView.setTextAppearance(R.style.text_style1);
+        holder.textView.setText(item.getTitle() + "\n" + item.getOverview());
+//        holder.textView.setTextSize();
     }
 
     @Override
     public int getItemCount() {
-        return movies.length;
+        return movies.size();
     }
 
     public void setClickListener(ItemClickListener itemClickListener) {
@@ -48,7 +60,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 
     // convenience method for getting data at click position
     public String getItem(int id) {
-        return movies[id];
+        return String.valueOf(movies.get(id));
     }
 
 
