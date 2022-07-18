@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,8 +20,16 @@ import java.util.ArrayList;
 
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder> {
 
+    public enum ListType {
+        SAVED,
+        FAVORITES,
+        WATCHED,
+        RECOMMENDATIONS
+    }
+
 //    private String[] movies;
     private ArrayList<Movie> movies;
+    ListType listType = ListType.SAVED;
 
     private ItemClickListener clickListener;
 
@@ -30,6 +39,11 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 
     public MovieListAdapter(ArrayList<Movie> movies){
         this.movies = movies;
+    }
+
+    public MovieListAdapter(ArrayList<Movie> movies, ListType listType){
+        this.movies = movies;
+        this.listType = listType;
     }
 
     @NonNull
@@ -96,6 +110,11 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         TextView ratingTextView;
         TextView yearTextView;
 
+        ImageButton addButton;
+        ImageButton seenButton;
+        ImageButton favoritesButton;
+        ImageButton deleteButton;
+
         ViewHolder(View itemView) {
             super(itemView);
 
@@ -104,6 +123,31 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
             ratingTextView = itemView.findViewById(R.id.movie_rating);
             yearTextView = itemView.findViewById(R.id.movie_year);
             counterTextView = itemView.findViewById(R.id.movie_item_counter);
+
+            addButton = itemView.findViewById(R.id.movie_item_add_button);
+            seenButton = itemView.findViewById(R.id.movie_item_seen_button);
+            favoritesButton = itemView.findViewById(R.id.movie_item_favorite_button);
+            deleteButton = itemView.findViewById(R.id.movie_item_remove_button);
+
+            switch(listType){
+                case SAVED:
+                    addButton.setVisibility(View.INVISIBLE);
+                    break;
+                case RECOMMENDATIONS:
+                    seenButton.setVisibility(View.INVISIBLE);
+                    favoritesButton.setVisibility(View.INVISIBLE);
+                    deleteButton.setVisibility(View.INVISIBLE);
+                    break;
+                case FAVORITES:
+                    addButton.setVisibility(View.INVISIBLE);
+                    seenButton.setVisibility(View.INVISIBLE);
+                    favoritesButton.setVisibility(View.INVISIBLE);
+                    break;
+                case WATCHED:
+                    addButton.setVisibility(View.INVISIBLE);
+                    seenButton.setVisibility(View.INVISIBLE);
+                    break;
+            }
 
             itemView.setOnClickListener(this);
         }

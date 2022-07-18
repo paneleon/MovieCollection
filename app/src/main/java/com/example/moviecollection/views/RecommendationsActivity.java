@@ -51,7 +51,7 @@ public class RecommendationsActivity extends AppCompatActivity {
                 new Movie("Movie 6")
         ));
 
-        MovieListAdapter adapter = new MovieListAdapter(movieList);
+        MovieListAdapter adapter = new MovieListAdapter(movieList, MovieListAdapter.ListType.RECOMMENDATIONS);
 
         adapter.setClickListener(new MovieListAdapter.ItemClickListener() {
             @Override
@@ -118,7 +118,7 @@ public class RecommendationsActivity extends AppCompatActivity {
                 } catch (Exception e){
                     e.printStackTrace();
                 }
-                moviesRecyclerView.setAdapter(new MovieListAdapter(movieList));
+                moviesRecyclerView.setAdapter(new MovieListAdapter(movieList, MovieListAdapter.ListType.RECOMMENDATIONS));
             }
         }, new Response.ErrorListener(){
             @Override
