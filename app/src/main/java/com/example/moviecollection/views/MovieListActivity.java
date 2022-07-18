@@ -75,12 +75,6 @@ public class MovieListActivity extends AppCompatActivity {
 //                movieList = movieViewModel.getArrayOfMovies(dataSnapshot);
 
                 MovieListAdapter adapter = new MovieListAdapter(movieList, MovieListAdapter.ListType.SAVED);
-                adapter.setClickListener(new MovieListAdapter.ItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        System.out.println(movieList.get(position));
-                    }
-                });
                 moviesRecyclerView.setAdapter(adapter);
             }
 
