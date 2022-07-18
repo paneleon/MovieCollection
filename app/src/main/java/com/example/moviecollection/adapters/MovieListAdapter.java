@@ -41,7 +41,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 //    }};
 
     Map<Boolean, Integer> buttonColors  = new HashMap<Boolean, Integer>() {{
-        put(true, R.color.blue4);
+        put(true, R.color.light_gray);
         put(false, R.color.white);
     }};
 
