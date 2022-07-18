@@ -1,5 +1,7 @@
 package com.example.moviecollection.adapters;
 
+import android.app.Application;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +12,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moviecollection.R;
 import com.example.moviecollection.model.Movie;
+import com.example.moviecollection.model.MovieDao;
+import com.example.moviecollection.viewmodel.MovieViewModel;
 import com.example.moviecollection.views.MovieFragment;
 
 import java.util.ArrayList;
@@ -27,15 +32,16 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         RECOMMENDATIONS
     }
 
+
+
 //    private String[] movies;
     private ArrayList<Movie> movies;
     ListType listType = ListType.SAVED;
 
     private ItemClickListener clickListener;
-
-//    public MovieListAdapter(String[] options){
-//        this.movies = options;
-//    }
+//    Application application;
+//    Context context;
+    MovieViewModel movieViewModel;
 
     public MovieListAdapter(ArrayList<Movie> movies){
         this.movies = movies;
@@ -44,6 +50,12 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
     public MovieListAdapter(ArrayList<Movie> movies, ListType listType){
         this.movies = movies;
         this.listType = listType;
+    }
+
+    public MovieListAdapter(ArrayList<Movie> movies, ListType listType, MovieViewModel viewModel){
+        this.movies = movies;
+        this.listType = listType;
+        this.movieViewModel = viewModel;
     }
 
     @NonNull
@@ -60,8 +72,6 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 //        holder.overviewTextView.setText(item.getOverview() != null ? item.getOverview() : "");
 //        holder.yearTextView.setText(item.getReleaseDate() != null ? item.getReleaseDate() : "");
 //        holder.ratingTextView.setText(item.getVoteAverage() != 0 ? String.valueOf(item.getVoteAverage()) : "");
-
-
 
         if (item.getTitle() != null) {
             holder.titleTextView.setText(item.getTitle());
@@ -80,6 +90,14 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         }
 
         holder.counterTextView.setText(String.valueOf(position));
+
+        holder.addButton.setOnClickListener(v -> holder.addButtonClick(item));
+
+        holder.seenButton.setOnClickListener(v -> holder.seenButtonClick(item));
+
+        holder.favoritesButton.setOnClickListener(v -> holder.favoritesButtonClick(item));
+
+        holder.deleteButton.setOnClickListener(v -> holder.deleteButtonClick(item));
     }
 
     @Override
@@ -148,7 +166,6 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
                     seenButton.setVisibility(View.INVISIBLE);
                     break;
             }
-
             itemView.setOnClickListener(this);
         }
 
@@ -157,6 +174,23 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
             if (clickListener != null) {
                 clickListener.onItemClick(view, getAdapterPosition());
             }
+        }
+
+        public void addButtonClick(Movie movie){
+            System.out.println("Add button was clicked");
+//            movieViewModel.addMovie(movie);
+        }
+
+        public void seenButtonClick(Movie movie){
+            System.out.println("Seen button was clicked");
+        }
+
+        public void favoritesButtonClick(Movie movie){
+            System.out.println("Favorites button was clicked");
+        }
+
+        public void deleteButtonClick(Movie movie){
+            System.out.println("Delete button was clicked");
         }
     }
 }
