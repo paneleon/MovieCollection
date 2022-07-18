@@ -30,4 +30,12 @@ public class MovieRepository {
     public void removeMovie(String key){
         movieDao.removeMovieFromDB(key);
     }
+
+    public void setFavorite(String key, boolean state){
+        movieDao.setFavorite(key, state);
+    }
+
+    public void setSeen(String key, boolean state){
+        movieDao.setSeen(key, state);
+    }
 }

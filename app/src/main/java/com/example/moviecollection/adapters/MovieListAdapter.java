@@ -2,6 +2,7 @@ package com.example.moviecollection.adapters;
 
 import android.app.Application;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,8 @@ import com.example.moviecollection.viewmodel.MovieViewModel;
 import com.example.moviecollection.views.MovieFragment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder> {
 
@@ -31,6 +34,16 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         WATCHED,
         RECOMMENDATIONS
     }
+
+//    Map<Boolean, Integer> buttonColors  = new HashMap<Boolean, Integer>() {{
+//        put(true, Color.BLUE);
+//        put(false, Color.GREEN);
+//    }};
+
+    Map<Boolean, Integer> buttonColors  = new HashMap<Boolean, Integer>() {{
+        put(true, R.color.blue4);
+        put(false, R.color.white);
+    }};
 
     private ArrayList<Movie> movies;
     ListType listType = ListType.SAVED;
@@ -89,6 +102,9 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         holder.favoritesButton.setOnClickListener(v -> holder.favoritesButtonClick(item));
 
         holder.deleteButton.setOnClickListener(v -> holder.deleteButtonClick(item.getKey()));
+
+        holder.favoritesButton.setBackgroundResource(buttonColors.get(item.getFavorite()));
+        holder.seenButton.setBackgroundResource(buttonColors.get(item.getSeen()));
     }
 
     @Override
@@ -172,17 +188,25 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
             movieViewModel.addMovie(movie);
         }
 
-        public void seenButtonClick(Movie movie){
-            System.out.println("Seen button was clicked");
+        public void deleteButtonClick(String key){
+            System.out.println("Delete button was clicked");
+            movieViewModel.removeMovie(key);
         }
 
         public void favoritesButtonClick(Movie movie){
             System.out.println("Favorites button was clicked");
+            movie.setFavorite(!movie.getFavorite());
+            movieViewModel.setFavorite(movie.getKey(), movie.getFavorite());
+
+            favoritesButton.setBackgroundResource(buttonColors.get(movie.getSeen()));
         }
 
-        public void deleteButtonClick(String key){
-            System.out.println("Delete button was clicked");
-            movieViewModel.removeMovie(key);
+        public void seenButtonClick(Movie movie){
+            System.out.println("Seen button was clicked");
+            movie.setSeen(!movie.getSeen());
+            movieViewModel.setSeen(movie.getKey(), movie.getSeen());
+
+            seenButton.setBackgroundResource(buttonColors.get(movie.getSeen()));
         }
     }
 }

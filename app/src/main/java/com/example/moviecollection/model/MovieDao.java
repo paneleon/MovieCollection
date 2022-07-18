@@ -71,11 +71,14 @@ public class MovieDao {
     }
 
     public void removeMovieFromDB(String key){
-//        Query movieQuery = dbRef.equalTo(key);
-
-//        for (DataSnapshot movieSnapshot: movieQuery.getChildren()) {
-////            movieSnapshot.getRef().removeValue();
-//        }
         dbRef.child(key).removeValue();
+    }
+
+    public void setFavorite(String key, boolean state){
+        dbRef.child(key).child("favorite").setValue(state);
+    }
+
+    public void setSeen(String key, boolean state){
+        dbRef.child(key).child("seen").setValue(state);
     }
 }

@@ -23,7 +23,7 @@ public class Movie {
     String key;
 
     boolean favorite = false;
-    boolean watched = false;
+    boolean seen = false;
 
     public Movie(){
 
@@ -85,8 +85,8 @@ public class Movie {
         this.favorite = fav;
     }
 
-    public void setWatched(boolean watched){
-        this.watched = watched;
+    public void setSeen(boolean watched){
+        this.seen = watched;
     }
 
     public String getReleaseDate(){
@@ -102,5 +102,13 @@ public class Movie {
     }
     public void setKey(String key){
         this.key = key;
+    }
+
+    public boolean getFavorite(){
+        return favorite;
+    }
+
+    public boolean getSeen(){
+        return seen;
     }
 }
