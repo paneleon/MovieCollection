@@ -9,6 +9,7 @@
         android:id="@+id/movie_item_counter"
         style="@style/text_style1"
         android:layout_alignParentLeft="true"
+        android:paddingRight="20dp"
         />
 
     <TextView
@@ -33,7 +34,9 @@
     <TextView
         android:id="@+id/movie_rating"
         style="@style/text_style2"
-        android:layout_toRightOf="@+id/movie_year"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/movie_overview"
+
         />
 
     <ImageButton

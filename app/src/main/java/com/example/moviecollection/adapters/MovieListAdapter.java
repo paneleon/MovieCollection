@@ -32,15 +32,10 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         RECOMMENDATIONS
     }
 
-
-
-//    private String[] movies;
     private ArrayList<Movie> movies;
     ListType listType = ListType.SAVED;
 
     private ItemClickListener clickListener;
-//    Application application;
-//    Context context;
     MovieViewModel movieViewModel;
 
     public MovieListAdapter(ArrayList<Movie> movies){
@@ -68,10 +63,6 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Movie item = movies.get(position);
-//        holder.titleTextView.setText((item.getTitle() != null ? item.getTitle() : ""));
-//        holder.overviewTextView.setText(item.getOverview() != null ? item.getOverview() : "");
-//        holder.yearTextView.setText(item.getReleaseDate() != null ? item.getReleaseDate() : "");
-//        holder.ratingTextView.setText(item.getVoteAverage() != 0 ? String.valueOf(item.getVoteAverage()) : "");
 
         if (item.getTitle() != null) {
             holder.titleTextView.setText(item.getTitle());
@@ -86,10 +77,10 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         }
 
         if (item.getVoteAverage() != 0) {
-            holder.ratingTextView.setText(item.getVoteAverage());
+            holder.ratingTextView.setText(String.valueOf(item.getVoteAverage()));
         }
 
-        holder.counterTextView.setText(String.valueOf(position));
+        holder.counterTextView.setText(String.valueOf(position + 1));
 
         holder.addButton.setOnClickListener(v -> holder.addButtonClick(item));
 
@@ -178,7 +169,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 
         public void addButtonClick(Movie movie){
             System.out.println("Add button was clicked");
-//            movieViewModel.addMovie(movie);
+            movieViewModel.addMovie(movie);
         }
 
         public void seenButtonClick(Movie movie){

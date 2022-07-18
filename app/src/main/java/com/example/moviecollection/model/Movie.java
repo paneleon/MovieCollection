@@ -16,7 +16,7 @@ public class Movie {
     int runtime;
     String tagline;
     String title;
-    int voteAverage;
+    double voteAverage;
     int voteCount;
     String poster;
 
@@ -39,6 +39,14 @@ public class Movie {
         this.title = title;
         this.overview = overview;
 //        this.poster = poster;
+    }
+
+    public Movie(int id, String title, String overview, String date, double rating){
+        this.id = id;
+        this.title = title;
+        this.overview = overview;
+        this.releaseDate = date;
+        this.voteAverage = rating;
     }
 
     public Movie(String title){
@@ -74,7 +82,7 @@ public class Movie {
         return releaseDate;
     }
 
-    public int getVoteAverage(){
+    public double getVoteAverage(){
         return voteAverage;
     }
 }

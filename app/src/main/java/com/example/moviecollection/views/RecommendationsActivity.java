@@ -1,6 +1,7 @@
 package com.example.moviecollection.views;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,6 +19,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.moviecollection.R;
 import com.example.moviecollection.adapters.MovieListAdapter;
 import com.example.moviecollection.model.Movie;
+import com.example.moviecollection.viewmodel.MovieViewModel;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -29,6 +31,8 @@ public class RecommendationsActivity extends AppCompatActivity {
 
     private ArrayList<Movie> movieList = new ArrayList<>();
     RecyclerView moviesRecyclerView;
+    public static final String API_KEY = "";
+    MovieViewModel movieViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +40,7 @@ public class RecommendationsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recommendations);
 
 
-
-//        https://api.themoviedb.org/3/movie/latest?api_key=<<api_key>>&language=en-US
-
-        // b1c39b43abc3c3c914005b1d3ebaaaf8
+        movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
 
         moviesRecyclerView = findViewById(R.id.recommendations_movie_list);
 
@@ -70,7 +71,7 @@ public class RecommendationsActivity extends AppCompatActivity {
     }
 
     private void getLatestMovies() {
-        String endpoint = "https://api.themoviedb.org/3/movie/popular?api_key={api_key}&language=en-US&page=1";
+        String endpoint = String.format("https://api.themoviedb.org/3/movie/popular?api_key=%s&language=en-US&page=1", API_KEY);
 //
 //        ArrayList<String> result =  new ArrayList<>(0);
 //
@@ -118,7 +119,7 @@ public class RecommendationsActivity extends AppCompatActivity {
                 } catch (Exception e){
                     e.printStackTrace();
                 }
-                moviesRecyclerView.setAdapter(new MovieListAdapter(movieList, MovieListAdapter.ListType.RECOMMENDATIONS));
+                moviesRecyclerView.setAdapter(new MovieListAdapter(movieList, MovieListAdapter.ListType.RECOMMENDATIONS, movieViewModel));
             }
         }, new Response.ErrorListener(){
             @Override

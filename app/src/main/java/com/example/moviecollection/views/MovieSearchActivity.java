@@ -3,6 +3,7 @@ package com.example.moviecollection.views;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.moviecollection.R;
 import com.example.moviecollection.adapters.MovieListAdapter;
 import com.example.moviecollection.model.Movie;
+import com.example.moviecollection.viewmodel.MovieViewModel;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -32,11 +34,14 @@ public class MovieSearchActivity extends AppCompatActivity {
     String searchText;
     ArrayList<Movie> movies = new ArrayList<>();
     RecyclerView moviesRecyclerView;
+    MovieViewModel movieViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_search);
+
+        movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
 
         ImageButton searchButton = findViewById(R.id.search_button);
         searchButton.setOnClickListener(new View.OnClickListener() {
@@ -49,30 +54,9 @@ public class MovieSearchActivity extends AppCompatActivity {
         });
 
         moviesRecyclerView = findViewById(R.id.movie_search_list);
-
-//    updateFragments();
-
     }
 
-//    private void updateFragments(){
-//        FragmentManager manager = getSupportFragmentManager();
-//        FragmentTransaction transaction = manager.beginTransaction();
-//        for (Movie movie: movies) {
-//            transaction.add(R.id.found_movies_container, new MovieFragment(movie), "TAG");
-//        }
-//        transaction.commitNow();
-//
-//    }
-//
-//    private void clearFragments(){
-//        FragmentManager manager = getSupportFragmentManager();
-//        FragmentTransaction transaction = manager.beginTransaction();
-//
-//    }
-
     private void searchMovie(String title){
-
-        System.out.println("title " + title);
         
         String formattedTitle = title.trim().replace(' ', '+');
         // Jack+Reacher
@@ -90,28 +74,32 @@ public class MovieSearchActivity extends AppCompatActivity {
                     for (int i = 0; i < results.length(); i++){
                         JSONObject jsonObject = results.getJSONObject(i);
 
-                        Log.d("my-api","==== "+ jsonObject.getString("title"));
-                        Log.d("my-api","==== "+ jsonObject.getString("overview"));
-                        Log.d("my-api","==== "+ jsonObject.getString("id"));
+                        Log.d("search movies","total ==== "+ response.getString("total_results"));
+                        Log.d("search movies","page ==== "+ response.getString("page"));
+                        Log.d("search movies","total pages ==== "+ response.getString("total_pages"));
+
+                        Log.d("search movies","==== "+ jsonObject.getString("id"));
                         movies.add(new Movie(Integer.parseInt(jsonObject.getString("id")),
                                         jsonObject.getString("title"),
-                                        jsonObject.getString("overview")
+                                        jsonObject.getString("overview"),
+                                        (jsonObject.has("release_date") ? jsonObject.getString("release_date") : ""),
+                                        Double.parseDouble(jsonObject.getString("vote_average"))
                                 )
                         );
                     }
-//                    updateFragments();
                 } catch (Exception e){
                     e.printStackTrace();
                 }
-                moviesRecyclerView.setAdapter(new MovieListAdapter(movies, MovieListAdapter.ListType.RECOMMENDATIONS));
+                moviesRecyclerView.setAdapter(new MovieListAdapter(movies, MovieListAdapter.ListType.RECOMMENDATIONS, movieViewModel));
             }
         }, new Response.ErrorListener(){
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("my-api",error.getMessage());
+                Log.d("search movies", error.getMessage());
             }
         });
         requestQueue.add(jsonObjectRequest);
+//        moviesRecyclerView.setAdapter(new MovieListAdapter(movies, MovieListAdapter.ListType.RECOMMENDATIONS));
     }
 
 
