@@ -1,9 +1,6 @@
 package com.example.moviecollection.viewmodel;
 
 import android.app.Application;
-import android.location.Location;
-import android.os.AsyncTask;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -11,30 +8,11 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.moviecollection.model.Movie;
-import com.example.moviecollection.model.MovieDao;
 import com.example.moviecollection.repositories.MovieRepository;
+import com.google.firebase.database.DataSnapshot;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 public class MovieViewModel extends AndroidViewModel {
 
@@ -51,12 +29,12 @@ public class MovieViewModel extends AndroidViewModel {
         movieRepository.addMovie(movie);
     }
 
-    public LiveData<List<Movie>> getMovies() {
-        if (movies == null) {
-            movies = new MutableLiveData<List<Movie>>();
-            loadMoviesFromDB();
-        }
-        return movies;
+//    public ArrayList<Movie> getMovies(DataSnapshot snapshot){
+//        return movieRepository.getMovies();
+//    }
+
+    public ArrayList<Movie> getArrayOfMovies(DataSnapshot snapshot) {
+        return movieRepository.getArrayOfMovies(snapshot);
     }
 
     public static void loadMoviesFromDB() {

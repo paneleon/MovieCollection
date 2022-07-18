@@ -10,20 +10,43 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 public class MovieDao {
     private static volatile MovieDao INSTANCE;
     private static final String DB_NAME = "Movies";
     private static final String DB_URL = "https://moviecollection-d43bf-default-rtdb.firebaseio.com/";
+    private static String TAG = "Movie";
 
     FirebaseDatabase database;
-    DatabaseReference dbRef;
+    public static DatabaseReference dbRef;
+    private ArrayList<Movie> movies = new ArrayList<>();
 
     private MovieDao(){
         database = FirebaseDatabase.getInstance(DB_URL);
         dbRef = database.getReference(DB_NAME);
+
+
+//        dbRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//
+//            for (DataSnapshot child: dataSnapshot.getChildren()) {
+//                Movie value = child.getValue(Movie.class);
+//                movies.add(value);
+//            }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError error) {
+//                // Failed to read value
+//                Log.w(TAG, "Failed to read value.", error.toException());
+//            }
+//        });
     }
 
     public static MovieDao getInstance(){
@@ -39,31 +62,10 @@ public class MovieDao {
     }
 
 
-//    public List<Movie> getMoviesFromDB(Movie movie) {
-//
-//        dbRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//                HashMap<String, Movie> movies = (HashMap<String, Movie>) dataSnapshot.getValue();
-//                StringBuilder output = new StringBuilder();
-//
-//                if (names != null) {
-//                    for (String person : names.keySet()) {
-//                        Log.d(TAG, "Key is: " + person);
-//                        Log.d(TAG, "Value is: " + names.get(person));
-//                        output.append(names.get(person)).append("\n");
-//                    }
-//                }
-//                tv.setText(output.toString());
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError error) {
-//                // Failed to read value
-//                Log.w(TAG, "Failed to read value.", error.toException());
-//            }
-//        });
-//    }
-
+    public ArrayList<Movie> getArrayOfMovies(DataSnapshot snapshot) {
+        for (DataSnapshot child: snapshot.getChildren()) {
+            movies.add(child.getValue(Movie.class));
+        }
+        return movies;
+    }
 }

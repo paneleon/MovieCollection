@@ -69,4 +69,12 @@ public class Movie {
     public void setWatched(boolean watched){
         this.watched = watched;
     }
+
+    public String getReleaseDate(){
+        return releaseDate;
+    }
+
+    public int getVoteAverage(){
+        return voteAverage;
+    }
 }

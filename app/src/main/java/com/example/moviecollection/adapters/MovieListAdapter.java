@@ -3,13 +3,17 @@ package com.example.moviecollection.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.moviecollection.R;
 import com.example.moviecollection.model.Movie;
+import com.example.moviecollection.views.MovieFragment;
 
 import java.util.ArrayList;
 
@@ -38,9 +42,30 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Movie item = movies.get(position);
-//        holder.textView.setTextAppearance(R.style.text_style1);
-        holder.textView.setText(item.getTitle() + "\n" + item.getOverview());
-//        holder.textView.setTextSize();
+//        holder.titleTextView.setText((item.getTitle() != null ? item.getTitle() : ""));
+//        holder.overviewTextView.setText(item.getOverview() != null ? item.getOverview() : "");
+//        holder.yearTextView.setText(item.getReleaseDate() != null ? item.getReleaseDate() : "");
+//        holder.ratingTextView.setText(item.getVoteAverage() != 0 ? String.valueOf(item.getVoteAverage()) : "");
+
+
+
+        if (item.getTitle() != null) {
+            holder.titleTextView.setText(item.getTitle());
+        }
+
+        if (item.getOverview() != null) {
+            holder.overviewTextView.setText(item.getOverview());
+        }
+
+        if (item.getReleaseDate() != null) {
+            holder.yearTextView.setText(item.getReleaseDate());
+        }
+
+        if (item.getVoteAverage() != 0) {
+            holder.ratingTextView.setText(item.getVoteAverage());
+        }
+
+        holder.counterTextView.setText(String.valueOf(position));
     }
 
     @Override
@@ -65,11 +90,21 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView textView;
+        TextView counterTextView;
+        TextView titleTextView;
+        TextView overviewTextView;
+        TextView ratingTextView;
+        TextView yearTextView;
 
         ViewHolder(View itemView) {
             super(itemView);
-            textView = itemView.findViewById(R.id.movie_item);
+
+            titleTextView = itemView.findViewById(R.id.movie_title);
+            overviewTextView = itemView.findViewById(R.id.movie_overview);
+            ratingTextView = itemView.findViewById(R.id.movie_rating);
+            yearTextView = itemView.findViewById(R.id.movie_year);
+            counterTextView = itemView.findViewById(R.id.movie_item_counter);
+
             itemView.setOnClickListener(this);
         }
 

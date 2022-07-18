@@ -1,15 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="10dp">
+    android:padding="20dp">
 
     <TextView
-        android:id="@+id/movie_item"
+        android:id="@+id/movie_item_counter"
+        style="@style/text_style1"
+        android:layout_alignParentLeft="true"
+        />
+
+    <TextView
+        android:id="@+id/movie_title"
+        style="@style/text_style1"
+        android:layout_toRightOf="@+id/movie_item_counter"
+        />
+
+    <TextView
+        android:id="@+id/movie_overview"
+        style="@style/text_style2"
+        android:layout_below="@+id/movie_title"
+        android:layout_alignParentLeft="true"
+        />
+
+    <TextView
+        android:id="@+id/movie_year"
+        style="@style/text_style2"
+        android:layout_below="@+id/movie_overview"
+        />
+
+    <TextView
+        android:id="@+id/movie_rating"
+        style="@style/text_style2"
+        android:layout_toRightOf="@+id/movie_year"
+        />
+
+    <Button
+        android:text="Click"
+        android:layout_below="@+id/movie_rating"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:backgroundTint="@color/yellow1"
+        android:id="@+id/movie_item_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"/>
 
-</LinearLayout>
+</RelativeLayout>
