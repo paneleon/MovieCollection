@@ -37,6 +37,10 @@ public class MovieViewModel extends AndroidViewModel {
         return movieRepository.getArrayOfMovies(snapshot);
     }
 
+    public void removeMovie(String key){
+        movieRepository.removeMovie(key);
+    }
+
     public static void loadMoviesFromDB() {
 //        new AsyncTask<Void, Void, List<Movie>>() {
 //            @Override

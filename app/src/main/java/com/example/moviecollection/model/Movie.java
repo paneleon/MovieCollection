@@ -20,6 +20,8 @@ public class Movie {
     int voteCount;
     String poster;
 
+    String key;
+
     boolean favorite = false;
     boolean watched = false;
 
@@ -42,6 +44,15 @@ public class Movie {
     }
 
     public Movie(int id, String title, String overview, String date, double rating){
+        this.id = id;
+        this.title = title;
+        this.overview = overview;
+        this.releaseDate = date;
+        this.voteAverage = rating;
+    }
+
+    public Movie(String key, int id, String title, String overview, String date, double rating){
+        this.key = key;
         this.id = id;
         this.title = title;
         this.overview = overview;
@@ -84,5 +95,12 @@ public class Movie {
 
     public double getVoteAverage(){
         return voteAverage;
+    }
+
+    public String getKey(){
+        return key;
+    }
+    public void setKey(String key){
+        this.key = key;
     }
 }

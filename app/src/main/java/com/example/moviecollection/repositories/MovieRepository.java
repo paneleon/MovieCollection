@@ -26,4 +26,8 @@ public class MovieRepository {
     public ArrayList<Movie> getArrayOfMovies(DataSnapshot snapshot){
         return movieDao.getArrayOfMovies(snapshot);
     }
+
+    public void removeMovie(String key){
+        movieDao.removeMovieFromDB(key);
+    }
 }

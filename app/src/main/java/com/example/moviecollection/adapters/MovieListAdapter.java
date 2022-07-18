@@ -88,7 +88,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 
         holder.favoritesButton.setOnClickListener(v -> holder.favoritesButtonClick(item));
 
-        holder.deleteButton.setOnClickListener(v -> holder.deleteButtonClick(item));
+        holder.deleteButton.setOnClickListener(v -> holder.deleteButtonClick(item.getKey()));
     }
 
     @Override
@@ -180,8 +180,9 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
             System.out.println("Favorites button was clicked");
         }
 
-        public void deleteButtonClick(Movie movie){
+        public void deleteButtonClick(String key){
             System.out.println("Delete button was clicked");
+            movieViewModel.removeMovie(key);
         }
     }
 }

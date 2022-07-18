@@ -22,6 +22,7 @@ import com.example.moviecollection.model.MovieDao;
 import com.example.moviecollection.viewmodel.MovieViewModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.Array;
@@ -34,6 +35,7 @@ public class MovieListActivity extends AppCompatActivity {
 
     MovieViewModel movieViewModel;
     ArrayList<Movie> movieList = new ArrayList<>();
+    MovieListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,17 +66,20 @@ public class MovieListActivity extends AppCompatActivity {
 //        }
 
         MovieDao.dbRef.addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                movieList.clear();
 
                 for (DataSnapshot child: dataSnapshot.getChildren()) {
                     Movie value = child.getValue(Movie.class);
+                    value.setKey(child.getKey());
                     movieList.add(value);
                 }
 
 //                movieList = movieViewModel.getArrayOfMovies(dataSnapshot);
 
-                MovieListAdapter adapter = new MovieListAdapter(movieList, MovieListAdapter.ListType.SAVED);
+                adapter = new MovieListAdapter(movieList, MovieListAdapter.ListType.SAVED, movieViewModel);
                 moviesRecyclerView.setAdapter(adapter);
             }
 
