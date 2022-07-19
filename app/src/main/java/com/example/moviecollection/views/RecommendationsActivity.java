@@ -46,11 +46,7 @@ public class RecommendationsActivity extends AppCompatActivity {
 
         moviesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        ArrayList<Movie> movieList = new ArrayList<Movie>(Arrays.asList(
-                new Movie("Movie 4"),
-                new Movie("Movie 5"),
-                new Movie("Movie 6")
-        ));
+        ArrayList<Movie> movieList = new ArrayList<>();
 
         MovieListAdapter adapter = new MovieListAdapter(movieList, MovieListAdapter.ListType.RECOMMENDATIONS);
 

@@ -48,22 +48,6 @@ public class MovieListActivity extends AppCompatActivity {
 
 
         movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
-//        Movie m = new Movie(1, "Test Movie", "First test movie overview");
-//        Movie m2 = new Movie(2, "Test Movie2", "Second test movie overview");
-//        movieViewModel.addMovie(m);
-//        movieViewModel.addMovie(m2);
-
-//        movieList = new ArrayList<Movie>(Arrays.asList(
-//                new Movie("Movie 1"),
-//                new Movie("Movie 2"),
-//                new Movie("Movie 3")
-//        ));
-
-//        movieList = movieViewModel.getMovies();
-
-//        for (Movie movie: movieList) {
-//            System.out.println(movie);
-//        }
 
         MovieDao.dbRef.addValueEventListener(new ValueEventListener() {
 

@@ -3,6 +3,7 @@ package com.example.moviecollection.views;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -20,39 +21,46 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class WatchedMoviesActivity extends AppCompatActivity {
+public class FavoriteMoviesActivity extends AppCompatActivity {
 
     MovieViewModel movieViewModel;
     MovieListAdapter adapter;
-    ArrayList<Movie> movies = new ArrayList<>();
+    ArrayList<Movie> movies = new ArrayList<Movie>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_watched_movies);
+        setContentView(R.layout.activity_favorites);
+
+        RecyclerView moviesRecyclerView = findViewById(R.id.favorite_movie_list);
+//        moviesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
-        RecyclerView listRecyclerView = findViewById(R.id.watched_movie_list);
+//        adapter = new MovieListAdapter(movies, MovieListAdapter.ListType.FAVORITES, movieViewModel);
 
-        Query watchedMoviesQuery = MovieDao.dbRef.orderByChild("seen").equalTo(true);
-        watchedMoviesQuery.addValueEventListener(new ValueEventListener() {
+
+        //        MovieDao.dbRef.orderByChild("favorite").equalTo(true).addValueEventListener(new ValueEventListener() {
+        Query favoriteMovieQuery = MovieDao.dbRef.orderByChild("favorite").equalTo(true);
+        favoriteMovieQuery.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 movies.clear();
                 for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+                    System.out.println("-------" + snapshot.toString());
                     Movie movie = snapshot.getValue(Movie.class);
                     movie.setKey(snapshot.getKey());
                     movies.add(movie);
                 }
 
-                adapter = new MovieListAdapter(movies, MovieListAdapter.ListType.WATCHED, movieViewModel);
-                listRecyclerView.setAdapter(adapter);
+                adapter = new MovieListAdapter(movies, MovieListAdapter.ListType.FAVORITES, movieViewModel);
+                moviesRecyclerView.setAdapter(adapter);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.w("Watched Movies", "Failed to read values.", error.toException());
+                Log.w("Favorite Movies", "Failed to read values.", error.toException());
             }
         });
+
     }
 }

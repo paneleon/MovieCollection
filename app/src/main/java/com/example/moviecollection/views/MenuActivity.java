@@ -1,8 +1,6 @@
 package com.example.moviecollection.views;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -52,7 +50,7 @@ public class MenuActivity extends AppCompatActivity {
                         intent = new Intent(MenuActivity.this, WatchedMoviesActivity.class);
                         break;
                     case 4:
-                        intent = new Intent(MenuActivity.this, FavoritesActivity.class);
+                        intent = new Intent(MenuActivity.this, FavoriteMoviesActivity.class);
                         break;
                     case 5:
                         intent = new Intent(MenuActivity.this, SnacksActivity.class);

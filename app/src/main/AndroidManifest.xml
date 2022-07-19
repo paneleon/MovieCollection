@@ -24,7 +24,7 @@
             android:name=".views.RecommendationsActivity"
             android:exported="false" />
         <activity
-            android:name=".views.FavoritesActivity"
+            android:name=".views.FavoriteMoviesActivity"
             android:exported="false" />
         <activity
             android:name=".views.WatchedMoviesActivity"

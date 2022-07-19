@@ -190,7 +190,14 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 
         public void deleteButtonClick(String key){
             System.out.println("Delete button was clicked");
-            movieViewModel.removeMovie(key);
+
+            if (listType == ListType.FAVORITES){
+                movieViewModel.setFavorite(key, false);
+            } else if (listType == ListType.WATCHED){
+                movieViewModel.setSeen(key, false);
+            } else {
+                movieViewModel.removeMovie(key);
+            }
         }
 
         public void favoritesButtonClick(Movie movie){
