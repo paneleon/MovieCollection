@@ -27,6 +27,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class RecommendationsActivity extends AppCompatActivity {
 
@@ -35,6 +36,12 @@ public class RecommendationsActivity extends AppCompatActivity {
     public static final String API_KEY = "";
     MovieViewModel movieViewModel;
     ImageView emptyResultImage;
+
+    int currentPagePopular = 1;
+    int totalPagesPopular = currentPagePopular;
+
+    int currentPageTop = 1;
+    int totalPagesTop = currentPageTop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +73,7 @@ public class RecommendationsActivity extends AppCompatActivity {
 
     private void getPopularMovies() {
         movieList.clear();
-        String endpoint = String.format("https://api.themoviedb.org/3/movie/popular?api_key=%s&language=en-US", API_KEY);
+        String endpoint = String.format("https://api.themoviedb.org/3/movie/popular?api_key=%s&language=en-US&page=%d", API_KEY, currentPagePopular);
 
         RequestQueue requestQueue;
         requestQueue = Volley.newRequestQueue(this);
@@ -76,6 +83,10 @@ public class RecommendationsActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 try {
                     JSONArray results = response.getJSONArray("results");
+                    Log.d("search movies", "total pages ==== " + response.getString("total_pages"));
+
+                    totalPagesPopular = Math.min(Integer.parseInt(response.getString("total_pages")), 500); // the max is 500 according to docs
+                    currentPagePopular = ThreadLocalRandom.current().nextInt(1, totalPagesPopular + 1);
 
                     if (results.length() == 0){
                         emptyResultImage.setVisibility(View.VISIBLE);
@@ -83,10 +94,7 @@ public class RecommendationsActivity extends AppCompatActivity {
                         emptyResultImage.setVisibility(View.INVISIBLE);
                         for (int i = 0; i < results.length(); i++) {
                             JSONObject jsonObject = results.getJSONObject(i);
-
                             Log.d("my-api", "==== " + jsonObject.getString("title"));
-                            Log.d("my-api", "==== " + jsonObject.getString("overview"));
-                            Log.d("my-api", "==== " + jsonObject.getString("id"));
                             movieList.add(new Movie(Integer.parseInt(jsonObject.getString("id")),
                                             jsonObject.getString("title"),
                                             jsonObject.getString("overview"),
@@ -115,7 +123,7 @@ public class RecommendationsActivity extends AppCompatActivity {
 
     private void getTopMovies(){
         movieList.clear();
-        String endpoint = String.format("https://api.themoviedb.org/3/movie/top_rated?api_key=%s&language=en-US", API_KEY);
+        String endpoint = String.format("https://api.themoviedb.org/3/movie/top_rated?api_key=%s&language=en-US&page=%d", API_KEY, currentPageTop);
 
         RequestQueue requestQueue;
         requestQueue = Volley.newRequestQueue(this);
@@ -124,6 +132,9 @@ public class RecommendationsActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 try {
                     JSONArray results = response.getJSONArray("results");
+                    Log.d("search movies", "total ==== " + response.getString("total_results"));
+                    totalPagesTop = Math.min(Integer.parseInt(response.getString("total_pages")), 500); // the max is 500 according to docs
+                    currentPageTop = ThreadLocalRandom.current().nextInt(1, totalPagesTop + 1);
 
                     if (results.length() == 0){
                         emptyResultImage.setVisibility(View.VISIBLE);
@@ -131,10 +142,7 @@ public class RecommendationsActivity extends AppCompatActivity {
                         emptyResultImage.setVisibility(View.INVISIBLE);
                         for (int i = 0; i < results.length(); i++) {
                             JSONObject jsonObject = results.getJSONObject(i);
-
                             Log.d("my-api", "==== " + jsonObject.getString("title"));
-                            Log.d("my-api", "==== " + jsonObject.getString("overview"));
-                            Log.d("my-api", "==== " + jsonObject.getString("id"));
                             movieList.add(new Movie(Integer.parseInt(jsonObject.getString("id")),
                                             jsonObject.getString("title"),
                                             jsonObject.getString("overview"),

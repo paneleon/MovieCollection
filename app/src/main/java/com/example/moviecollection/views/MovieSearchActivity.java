@@ -31,6 +31,8 @@ import java.util.ArrayList;
 
 public class MovieSearchActivity extends AppCompatActivity {
 
+    //TODO: pagination
+
     public static final String API_KEY = "";
     String searchText;
     ArrayList<Movie> movies = new ArrayList<>();
