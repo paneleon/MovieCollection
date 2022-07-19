@@ -3,7 +3,6 @@ package com.example.moviecollection.views;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -30,7 +29,7 @@ public class FavoriteMoviesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_favorites);
+        setContentView(R.layout.activity_favorite_movies);
 
         RecyclerView moviesRecyclerView = findViewById(R.id.favorite_movie_list);
 //        moviesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
