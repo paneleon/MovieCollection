@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -39,6 +41,7 @@ public class MovieSearchActivity extends AppCompatActivity {
     RecyclerView moviesRecyclerView;
     MovieViewModel movieViewModel;
     ImageView emptyResultImage;
+    Animation animation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +62,8 @@ public class MovieSearchActivity extends AppCompatActivity {
 
         moviesRecyclerView = findViewById(R.id.movie_search_list);
         emptyResultImage = findViewById(R.id.empty_result);
+        animation = AnimationUtils.loadAnimation(this, R.anim.rotate_tumbleweed);
+        emptyResultImage.startAnimation(animation);
     }
 
     private void searchMovie(String title){
@@ -78,6 +83,7 @@ public class MovieSearchActivity extends AppCompatActivity {
 
                     if (results.length() == 0){
                         emptyResultImage.setVisibility(View.VISIBLE);
+                        emptyResultImage.startAnimation(animation);
                     } else {
                         emptyResultImage.setVisibility(View.INVISIBLE);
                         for (int i = 0; i < results.length(); i++) {

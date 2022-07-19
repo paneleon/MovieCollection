@@ -9,7 +9,7 @@
     tools:context=".views.MainActivity">
 
         <ImageView
-            android:id="@+id/start_icon"
+            android:id="@+id/start_image"
             android:layout_width="220dp"
             android:layout_height="220dp"
             android:layout_gravity="center_horizontal"

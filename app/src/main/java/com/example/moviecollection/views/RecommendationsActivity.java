@@ -8,6 +8,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AnimationUtils;
+//import androidx.compose.animation.core.Animation;
+import android.view.animation.Animation;
+
 import android.widget.Button;
 import android.widget.ImageView;
 
@@ -26,7 +30,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class RecommendationsActivity extends AppCompatActivity {
@@ -36,6 +39,7 @@ public class RecommendationsActivity extends AppCompatActivity {
     public static final String API_KEY = "";
     MovieViewModel movieViewModel;
     ImageView emptyResultImage;
+    Animation animation;
 
     int currentPagePopular = 1;
     int totalPagesPopular = currentPagePopular;
@@ -68,7 +72,8 @@ public class RecommendationsActivity extends AppCompatActivity {
         buttonForTop.setOnClickListener(v -> getTopMovies());
 
         emptyResultImage = findViewById(R.id.empty_result);
-
+        animation = AnimationUtils.loadAnimation(this, R.anim.rotate_tumbleweed);
+        emptyResultImage.startAnimation(animation);
     }
 
     private void getPopularMovies() {
@@ -90,6 +95,7 @@ public class RecommendationsActivity extends AppCompatActivity {
 
                     if (results.length() == 0){
                         emptyResultImage.setVisibility(View.VISIBLE);
+                        emptyResultImage.startAnimation(animation);
                     } else {
                         emptyResultImage.setVisibility(View.INVISIBLE);
                         for (int i = 0; i < results.length(); i++) {
@@ -138,6 +144,7 @@ public class RecommendationsActivity extends AppCompatActivity {
 
                     if (results.length() == 0){
                         emptyResultImage.setVisibility(View.VISIBLE);
+                        emptyResultImage.startAnimation(animation);
                     } else {
                         emptyResultImage.setVisibility(View.INVISIBLE);
                         for (int i = 0; i < results.length(); i++) {

@@ -6,8 +6,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.transition.Fade;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.example.moviecollection.R;
@@ -28,6 +32,7 @@ public class FavoriteMoviesActivity extends AppCompatActivity {
     MovieListAdapter adapter;
     ArrayList<Movie> movies = new ArrayList<Movie>();
     ImageView emptyResultImage;
+    Animation animation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,8 @@ public class FavoriteMoviesActivity extends AppCompatActivity {
         movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
 //        adapter = new MovieListAdapter(movies, MovieListAdapter.ListType.FAVORITES, movieViewModel);
 
+        animation = AnimationUtils.loadAnimation(this, R.anim.rotate_tumbleweed);
+        emptyResultImage.startAnimation(animation);
 
         //        MovieDao.dbRef.orderByChild("favorite").equalTo(true).addValueEventListener(new ValueEventListener() {
         Query favoriteMovieQuery = MovieDao.dbRef.orderByChild("favorite").equalTo(true);
@@ -56,6 +63,7 @@ public class FavoriteMoviesActivity extends AppCompatActivity {
 
                 if (movies.size() == 0){
                     emptyResultImage.setVisibility(View.VISIBLE);
+                    emptyResultImage.startAnimation(animation);
                 } else {
                     emptyResultImage.setVisibility(View.INVISIBLE);
 

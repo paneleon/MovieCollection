@@ -7,9 +7,16 @@
     android:orientation="vertical"
     tools:context=".views.MovieSearchActivity">
 
+    <TextView
+        style="@style/title_style1"
+        android:text="Search That Movie You Have in Mind "
+        />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginVertical="20dp"
         android:orientation="horizontal">
 
         <EditText

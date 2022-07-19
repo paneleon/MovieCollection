@@ -8,10 +8,9 @@
     tools:context=".views.SnacksActivity">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="Craving some popcorn?" />
+        style="@style/title_style2"
+        android:text="Craving some popcorn?"
+        />
 
     <ImageView
         android:layout_width="200dp"
@@ -22,11 +21,17 @@
         android:id="@+id/snack_icon" />
 
     <TextView
+        style="@style/text_style2"
+        android:layout_gravity="center_horizontal"
+        android:text="Here's a recipe for you" />
+
+    <TextView
         android:id="@+id/popcorn_recipe"
         android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="10pt"
         android:autoLink="web"
-        android:text="@string/snack_recipe" />
+        android:text="@string/snack_recipe_link" />
 
 </LinearLayout>

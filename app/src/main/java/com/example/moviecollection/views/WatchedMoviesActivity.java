@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.example.moviecollection.R;
@@ -28,6 +30,7 @@ public class WatchedMoviesActivity extends AppCompatActivity {
     MovieListAdapter adapter;
     ArrayList<Movie> movies = new ArrayList<>();
     ImageView emptyResultImage;
+    Animation animation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +40,9 @@ public class WatchedMoviesActivity extends AppCompatActivity {
         movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
         RecyclerView listRecyclerView = findViewById(R.id.watched_movie_list);
         emptyResultImage = findViewById(R.id.empty_result);
+
+        animation = AnimationUtils.loadAnimation(this, R.anim.rotate_tumbleweed);
+        emptyResultImage.startAnimation(animation);
 
         Query watchedMoviesQuery = MovieDao.dbRef.orderByChild("seen").equalTo(true);
         watchedMoviesQuery.addValueEventListener(new ValueEventListener() {
@@ -51,6 +57,7 @@ public class WatchedMoviesActivity extends AppCompatActivity {
 
                 if (movies.size() == 0){
                     emptyResultImage.setVisibility(View.VISIBLE);
+                    emptyResultImage.startAnimation(animation);
                 } else {
                     emptyResultImage.setVisibility(View.INVISIBLE);
 

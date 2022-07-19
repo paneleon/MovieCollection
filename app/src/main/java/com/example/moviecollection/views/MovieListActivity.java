@@ -1,20 +1,16 @@
 package com.example.moviecollection.views;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.moviecollection.R;
 import com.example.moviecollection.adapters.MovieListAdapter;
@@ -23,14 +19,9 @@ import com.example.moviecollection.model.MovieDao;
 import com.example.moviecollection.viewmodel.MovieViewModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
 
 public class MovieListActivity extends AppCompatActivity {
 
@@ -38,6 +29,7 @@ public class MovieListActivity extends AppCompatActivity {
     ArrayList<Movie> movieList = new ArrayList<>();
     MovieListAdapter adapter;
     ImageView emptyResultImage;
+    Animation animation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +41,9 @@ public class MovieListActivity extends AppCompatActivity {
         moviesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         emptyResultImage = findViewById(R.id.empty_result);
+        animation = AnimationUtils.loadAnimation(this, R.anim.rotate_tumbleweed);
+        emptyResultImage.startAnimation(animation);
+
         movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
 
         MovieDao.dbRef.addValueEventListener(new ValueEventListener() {
@@ -65,6 +60,7 @@ public class MovieListActivity extends AppCompatActivity {
 
                 if (movieList.size() == 0){
                     emptyResultImage.setVisibility(View.VISIBLE);
+                    emptyResultImage.startAnimation(animation);
                 } else {
                     emptyResultImage.setVisibility(View.INVISIBLE);
 

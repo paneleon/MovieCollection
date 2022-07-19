@@ -7,6 +7,11 @@
     android:orientation="vertical"
     tools:context=".views.MovieListActivity">
 
+    <TextView
+        style="@style/title_style1"
+        android:text="Movies To Watch"
+        />
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
