@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="text_style1">
         <item name="color">@color/blue3</item>
         <item name="android:textSize">12pt</item>
@@ -26,8 +27,20 @@
         <item name="android:layout_height">40dp</item>
         <item name="android:layout_margin">5dp</item>
         <item name="android:background">@color/white</item>
-<!--        <item name="android:background">@drawable/movie_list_button</item>-->
+        <!--        <item name="android:background">@drawable/movie_list_button</item>-->
         <item name="android:padding">5dp</item>
     </style>
+
+    <style name="empty_result_image">
+        <item name="android:src">@drawable/tumbleweed</item>
+        <item name="android:layout_width">160dp</item>
+        <item name="android:layout_height">160dp</item>
+        <item name="android:layout_margin">20dp</item>
+        <item name="android:id">@id/empty_result</item>
+        <item name="android:visibility">visible</item>
+        <item name="android:layout_gravity">center</item>
+<!--        <item type="id" name="empty_result" />-->
+    </style>
+
 
 </resources>

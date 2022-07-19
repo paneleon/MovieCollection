@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.example.moviecollection.R;
 import com.example.moviecollection.adapters.MovieListAdapter;
@@ -25,6 +27,7 @@ public class WatchedMoviesActivity extends AppCompatActivity {
     MovieViewModel movieViewModel;
     MovieListAdapter adapter;
     ArrayList<Movie> movies = new ArrayList<>();
+    ImageView emptyResultImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,7 @@ public class WatchedMoviesActivity extends AppCompatActivity {
 
         movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
         RecyclerView listRecyclerView = findViewById(R.id.watched_movie_list);
+        emptyResultImage = findViewById(R.id.empty_result);
 
         Query watchedMoviesQuery = MovieDao.dbRef.orderByChild("seen").equalTo(true);
         watchedMoviesQuery.addValueEventListener(new ValueEventListener() {
@@ -45,8 +49,14 @@ public class WatchedMoviesActivity extends AppCompatActivity {
                     movies.add(movie);
                 }
 
-                adapter = new MovieListAdapter(movies, MovieListAdapter.ListType.WATCHED, movieViewModel);
-                listRecyclerView.setAdapter(adapter);
+                if (movies.size() == 0){
+                    emptyResultImage.setVisibility(View.VISIBLE);
+                } else {
+                    emptyResultImage.setVisibility(View.INVISIBLE);
+
+                    adapter = new MovieListAdapter(movies, MovieListAdapter.ListType.WATCHED, movieViewModel);
+                    listRecyclerView.setAdapter(adapter);
+                }
             }
 
             @Override

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -33,12 +34,12 @@ public class RecommendationsActivity extends AppCompatActivity {
     RecyclerView moviesRecyclerView;
     public static final String API_KEY = "";
     MovieViewModel movieViewModel;
+    ImageView emptyResultImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recommendations);
-
 
         movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
 
@@ -50,12 +51,6 @@ public class RecommendationsActivity extends AppCompatActivity {
 
         MovieListAdapter adapter = new MovieListAdapter(movieList, MovieListAdapter.ListType.RECOMMENDATIONS);
 
-        adapter.setClickListener(new MovieListAdapter.ItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                System.out.println(movieList.get(position));
-            }
-        });
         moviesRecyclerView.setAdapter(adapter);
 
         Button buttonForLatest = findViewById(R.id.button_latest_movies);
@@ -64,6 +59,9 @@ public class RecommendationsActivity extends AppCompatActivity {
         buttonForLatest.setOnClickListener(v -> getLatestMovies());
 
         buttonForTop.setOnClickListener(v -> getTopMovies());
+
+        emptyResultImage = findViewById(R.id.empty_result);
+
     }
 
     private void getLatestMovies() {
@@ -100,17 +98,22 @@ public class RecommendationsActivity extends AppCompatActivity {
                 try {
                     JSONArray results = response.getJSONArray("results");
 
-                    for (int i = 0; i < results.length(); i++){
-                        JSONObject jsonObject = results.getJSONObject(i);
+                    if (results.length() == 0){
+                        emptyResultImage.setVisibility(View.VISIBLE);
+                    } else {
+                        emptyResultImage.setVisibility(View.INVISIBLE);
+                        for (int i = 0; i < results.length(); i++) {
+                            JSONObject jsonObject = results.getJSONObject(i);
 
-                        Log.d("my-api","==== "+ jsonObject.getString("title"));
-                        Log.d("my-api","==== "+ jsonObject.getString("overview"));
-                        Log.d("my-api","==== "+ jsonObject.getString("id"));
-                        movieList.add(new Movie(Integer.parseInt(jsonObject.getString("id")),
-                                jsonObject.getString("title"),
-                                jsonObject.getString("overview")
-                                )
-                        );
+                            Log.d("my-api", "==== " + jsonObject.getString("title"));
+                            Log.d("my-api", "==== " + jsonObject.getString("overview"));
+                            Log.d("my-api", "==== " + jsonObject.getString("id"));
+                            movieList.add(new Movie(Integer.parseInt(jsonObject.getString("id")),
+                                            jsonObject.getString("title"),
+                                            jsonObject.getString("overview")
+                                    )
+                            );
+                        }
                     }
                 } catch (Exception e){
                     e.printStackTrace();

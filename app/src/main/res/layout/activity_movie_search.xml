@@ -32,12 +32,6 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/found_movies_container"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -47,6 +41,7 @@
         app:spanCount="2"
         />
 
-
+    <ImageView
+        style="@style/empty_result_image" />
 
 </LinearLayout>

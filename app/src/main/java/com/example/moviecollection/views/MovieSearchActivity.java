@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -35,6 +36,7 @@ public class MovieSearchActivity extends AppCompatActivity {
     ArrayList<Movie> movies = new ArrayList<>();
     RecyclerView moviesRecyclerView;
     MovieViewModel movieViewModel;
+    ImageView emptyResultImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,7 @@ public class MovieSearchActivity extends AppCompatActivity {
         });
 
         moviesRecyclerView = findViewById(R.id.movie_search_list);
+        emptyResultImage = findViewById(R.id.empty_result);
     }
 
     private void searchMovie(String title){
@@ -71,21 +74,26 @@ public class MovieSearchActivity extends AppCompatActivity {
                 try {
                     JSONArray results = response.getJSONArray("results");
 
-                    for (int i = 0; i < results.length(); i++){
-                        JSONObject jsonObject = results.getJSONObject(i);
+                    if (results.length() == 0){
+                        emptyResultImage.setVisibility(View.VISIBLE);
+                    } else {
+                        emptyResultImage.setVisibility(View.INVISIBLE);
+                        for (int i = 0; i < results.length(); i++) {
+                            JSONObject jsonObject = results.getJSONObject(i);
 
-                        Log.d("search movies","total ==== "+ response.getString("total_results"));
-                        Log.d("search movies","page ==== "+ response.getString("page"));
-                        Log.d("search movies","total pages ==== "+ response.getString("total_pages"));
+                            Log.d("search movies", "total ==== " + response.getString("total_results"));
+                            Log.d("search movies", "page ==== " + response.getString("page"));
+                            Log.d("search movies", "total pages ==== " + response.getString("total_pages"));
 
-                        Log.d("search movies","==== "+ jsonObject.getString("id"));
-                        movies.add(new Movie(Integer.parseInt(jsonObject.getString("id")),
-                                        jsonObject.getString("title"),
-                                        jsonObject.getString("overview"),
-                                        (jsonObject.has("release_date") ? jsonObject.getString("release_date") : ""),
-                                        Double.parseDouble(jsonObject.getString("vote_average"))
-                                )
-                        );
+                            Log.d("search movies", "==== " + jsonObject.getString("id"));
+                            movies.add(new Movie(Integer.parseInt(jsonObject.getString("id")),
+                                            jsonObject.getString("title"),
+                                            jsonObject.getString("overview"),
+                                            (jsonObject.has("release_date") ? jsonObject.getString("release_date") : ""),
+                                            Double.parseDouble(jsonObject.getString("vote_average"))
+                                    )
+                            );
+                        }
                     }
                 } catch (Exception e){
                     e.printStackTrace();
@@ -101,6 +109,4 @@ public class MovieSearchActivity extends AppCompatActivity {
         requestQueue.add(jsonObjectRequest);
 //        moviesRecyclerView.setAdapter(new MovieListAdapter(movies, MovieListAdapter.ListType.RECOMMENDATIONS));
     }
-
-
 }

@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ public class MovieListActivity extends AppCompatActivity {
     MovieViewModel movieViewModel;
     ArrayList<Movie> movieList = new ArrayList<>();
     MovieListAdapter adapter;
+    ImageView emptyResultImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +48,7 @@ public class MovieListActivity extends AppCompatActivity {
 
         moviesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-
+        emptyResultImage = findViewById(R.id.empty_result);
         movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
 
         MovieDao.dbRef.addValueEventListener(new ValueEventListener() {
@@ -61,10 +63,15 @@ public class MovieListActivity extends AppCompatActivity {
                     movieList.add(value);
                 }
 
-//                movieList = movieViewModel.getArrayOfMovies(dataSnapshot);
+                if (movieList.size() == 0){
+                    emptyResultImage.setVisibility(View.VISIBLE);
+                } else {
+                    emptyResultImage.setVisibility(View.INVISIBLE);
 
-                adapter = new MovieListAdapter(movieList, MovieListAdapter.ListType.SAVED, movieViewModel);
-                moviesRecyclerView.setAdapter(adapter);
+                    adapter = new MovieListAdapter(movieList, MovieListAdapter.ListType.SAVED, movieViewModel);
+                    moviesRecyclerView.setAdapter(adapter);
+                }
+//                movieList = movieViewModel.getArrayOfMovies(dataSnapshot);
             }
 
             @Override

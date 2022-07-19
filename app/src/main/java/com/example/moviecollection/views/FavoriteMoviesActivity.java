@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.example.moviecollection.R;
 import com.example.moviecollection.adapters.MovieListAdapter;
@@ -25,6 +27,7 @@ public class FavoriteMoviesActivity extends AppCompatActivity {
     MovieViewModel movieViewModel;
     MovieListAdapter adapter;
     ArrayList<Movie> movies = new ArrayList<Movie>();
+    ImageView emptyResultImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +35,7 @@ public class FavoriteMoviesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_favorite_movies);
 
         RecyclerView moviesRecyclerView = findViewById(R.id.favorite_movie_list);
-//        moviesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        emptyResultImage = findViewById(R.id.empty_result);
 
         movieViewModel = new ViewModelProvider(this).get(MovieViewModel.class);
 //        adapter = new MovieListAdapter(movies, MovieListAdapter.ListType.FAVORITES, movieViewModel);
@@ -51,8 +54,14 @@ public class FavoriteMoviesActivity extends AppCompatActivity {
                     movies.add(movie);
                 }
 
-                adapter = new MovieListAdapter(movies, MovieListAdapter.ListType.FAVORITES, movieViewModel);
-                moviesRecyclerView.setAdapter(adapter);
+                if (movies.size() == 0){
+                    emptyResultImage.setVisibility(View.VISIBLE);
+                } else {
+                    emptyResultImage.setVisibility(View.INVISIBLE);
+
+                    adapter = new MovieListAdapter(movies, MovieListAdapter.ListType.FAVORITES, movieViewModel);
+                    moviesRecyclerView.setAdapter(adapter);
+                }
             }
 
             @Override

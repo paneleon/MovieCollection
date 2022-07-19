@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".views.MovieListActivity">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -14,5 +15,8 @@
         android:id="@+id/movie_list"
         app:spanCount="2"
         />
+
+    <ImageView
+        style="@style/empty_result_image" />
 
 </LinearLayout>

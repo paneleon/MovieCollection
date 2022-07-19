@@ -16,4 +16,7 @@
         app:spanCount="2"
         />
 
+    <ImageView
+        style="@style/empty_result_image" />
+
 </LinearLayout>
