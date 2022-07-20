@@ -10,6 +10,9 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.moviecollection.model.Movie;
 import com.example.moviecollection.repositories.MovieRepository;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +20,9 @@ import java.util.List;
 public class MovieViewModel extends AndroidViewModel {
 
     public MovieRepository movieRepository;
-    private static MutableLiveData<List<Movie>> movies;
+    private static MutableLiveData<ArrayList<Movie>> movies;
     private static final String TAG = "MoviesUpdate";
+    ArrayList<Movie> moviesArray = new ArrayList<>();
 
     public MovieViewModel(@NonNull Application application) {
         super(application);
@@ -29,12 +33,16 @@ public class MovieViewModel extends AndroidViewModel {
         movieRepository.addMovie(movie);
     }
 
-//    public ArrayList<Movie> getMovies(DataSnapshot snapshot){
-//        return movieRepository.getMovies();
-//    }
+    public MutableLiveData<ArrayList<Movie>> getMoviesToWatch() {
+        return movieRepository.getMoviesToWatch();
+    }
 
-    public ArrayList<Movie> getArrayOfMovies(DataSnapshot snapshot) {
-        return movieRepository.getArrayOfMovies(snapshot);
+    public MutableLiveData<ArrayList<Movie>> getFavoriteMovies(){
+        return movieRepository.getFavoriteMovies();
+    }
+
+    public MutableLiveData<ArrayList<Movie>> getWatchedMovies(){
+        return movieRepository.getWatchedMovies();
     }
 
     public void removeMovie(String key){
