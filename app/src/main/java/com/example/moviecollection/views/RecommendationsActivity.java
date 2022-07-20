@@ -1,12 +1,15 @@
 package com.example.moviecollection.views;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 //import androidx.compose.animation.core.Animation;
@@ -25,6 +28,7 @@ import com.example.moviecollection.R;
 import com.example.moviecollection.adapters.MovieListAdapter;
 import com.example.moviecollection.model.Movie;
 import com.example.moviecollection.viewmodel.MovieViewModel;
+import com.google.firebase.database.annotations.Nullable;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -36,7 +40,6 @@ public class RecommendationsActivity extends AppCompatActivity {
 
     private ArrayList<Movie> movieList = new ArrayList<>();
     RecyclerView moviesRecyclerView;
-    public static final String API_KEY = "";
     MovieViewModel movieViewModel;
     ImageView emptyResultImage;
     Animation animation;
@@ -68,7 +71,7 @@ public class RecommendationsActivity extends AppCompatActivity {
         Button buttonForTop = findViewById(R.id.button_top_movies);
 
         buttonForLatest.setOnClickListener(v -> getPopularMovies());
-
+//
         buttonForTop.setOnClickListener(v -> getTopMovies());
 
         emptyResultImage = findViewById(R.id.empty_result);
@@ -78,104 +81,59 @@ public class RecommendationsActivity extends AppCompatActivity {
 
     private void getPopularMovies() {
         movieList.clear();
-        String endpoint = String.format("https://api.themoviedb.org/3/movie/popular?api_key=%s&language=en-US&page=%d", API_KEY, currentPagePopular);
+        Pair<MutableLiveData<ArrayList<Movie>>, Integer> response = movieViewModel.getPopularMovies(currentPagePopular);
+        totalPagesPopular = Math.min(response.second, 500); // the max is 500 according to docs
+        System.out.println("TOTAL POPULAR " + response.second);
 
-        RequestQueue requestQueue;
-        requestQueue = Volley.newRequestQueue(this);
-//        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, endpoint,null, new Response.Listener<JSONArray>(){
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, endpoint,null, new Response.Listener<JSONObject>(){
+        currentPagePopular = ThreadLocalRandom.current().nextInt(1, totalPagesPopular + 1);
+
+//        movieViewModel.getPopularMovies(currentPagePopular).first.observe();
+        response.first.observe(this, new Observer<ArrayList<Movie>>() {
             @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONArray results = response.getJSONArray("results");
-                    Log.d("search movies", "total pages ==== " + response.getString("total_pages"));
-
-                    totalPagesPopular = Math.min(Integer.parseInt(response.getString("total_pages")), 500); // the max is 500 according to docs
-                    currentPagePopular = ThreadLocalRandom.current().nextInt(1, totalPagesPopular + 1);
-
-                    if (results.length() == 0){
-                        emptyResultImage.setVisibility(View.VISIBLE);
-                        emptyResultImage.startAnimation(animation);
-                    } else {
-                        emptyResultImage.setVisibility(View.INVISIBLE);
-                        for (int i = 0; i < results.length(); i++) {
-                            JSONObject jsonObject = results.getJSONObject(i);
-                            Log.d("my-api", "==== " + jsonObject.getString("title"));
-                            movieList.add(new Movie(Integer.parseInt(jsonObject.getString("id")),
-                                            jsonObject.getString("title"),
-                                            jsonObject.getString("overview"),
-                                            (jsonObject.has("release_date") ? jsonObject.getString("release_date") : ""),
-                                            Double.parseDouble(jsonObject.getString("vote_average"))
-                                    )
-                            );
-                        }
-                        moviesRecyclerView.setAdapter(new MovieListAdapter(movieList, MovieListAdapter.ListType.RECOMMENDATIONS, movieViewModel));
-                    }
-                } catch (Exception e){
-                    e.printStackTrace();
+            public void onChanged(@Nullable ArrayList<Movie> movies) {
+                movieList = movies;
+                if (movieList.size() == 0){
+                    emptyResultImage.setVisibility(View.VISIBLE);
+                    emptyResultImage.startAnimation(animation);
+                } else {
+                    emptyResultImage.setVisibility(View.INVISIBLE);
+                    moviesRecyclerView.setAdapter(new MovieListAdapter(movieList, MovieListAdapter.ListType.RECOMMENDATIONS, movieViewModel));
                 }
-
-            }
-        }, new Response.ErrorListener(){
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("my-api",error.getMessage());
             }
         });
-        requestQueue.add(jsonObjectRequest);
     }
 
 
 
-    private void getTopMovies(){
+    private void getTopMovies() {
         movieList.clear();
-        String endpoint = String.format("https://api.themoviedb.org/3/movie/top_rated?api_key=%s&language=en-US&page=%d", API_KEY, currentPageTop);
 
-        RequestQueue requestQueue;
-        requestQueue = Volley.newRequestQueue(this);
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, endpoint,null, new Response.Listener<JSONObject>(){
+        Pair<MutableLiveData<ArrayList<Movie>>, Integer> response = movieViewModel.getTopMovies(currentPageTop);
+        totalPagesTop = Math.min(response.second, 500); // the max is 500 according to docs
+        System.out.println("TOTAL POPULAR " + response.second);
+
+        currentPageTop = ThreadLocalRandom.current().nextInt(1, totalPagesTop + 1);
+
+//        movieViewModel.getPopularMovies(currentPagePopular).first.observe();
+        response.first.observe(this, new Observer<ArrayList<Movie>>() {
             @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONArray results = response.getJSONArray("results");
-                    Log.d("search movies", "total ==== " + response.getString("total_results"));
-                    totalPagesTop = Math.min(Integer.parseInt(response.getString("total_pages")), 500); // the max is 500 according to docs
-                    currentPageTop = ThreadLocalRandom.current().nextInt(1, totalPagesTop + 1);
+            public void onChanged(ArrayList<Movie> movies) {
+                totalPagesTop = Math.min(response.second, 500); // the max is 500 according to docs
+                System.out.println("TOTAL TOP " + totalPagesTop);
 
-                    if (results.length() == 0){
-                        emptyResultImage.setVisibility(View.VISIBLE);
-                        emptyResultImage.startAnimation(animation);
-                    } else {
-                        emptyResultImage.setVisibility(View.INVISIBLE);
-                        for (int i = 0; i < results.length(); i++) {
-                            JSONObject jsonObject = results.getJSONObject(i);
-                            Log.d("my-api", "==== " + jsonObject.getString("title"));
-                            movieList.add(new Movie(Integer.parseInt(jsonObject.getString("id")),
-                                            jsonObject.getString("title"),
-                                            jsonObject.getString("overview"),
-                                            (jsonObject.has("release_date") ? jsonObject.getString("release_date") : ""),
-                                            Double.parseDouble(jsonObject.getString("vote_average"))
-                                    )
-                            );
-                        }
-                        moviesRecyclerView.setAdapter(new MovieListAdapter(movieList, MovieListAdapter.ListType.RECOMMENDATIONS, movieViewModel));
-                    }
-                } catch (Exception e){
-                    e.printStackTrace();
+                currentPageTop = ThreadLocalRandom.current().nextInt(1, totalPagesTop + 1);
+
+                movieList = movies;
+                if (movieList.size() == 0){
+                    emptyResultImage.setVisibility(View.VISIBLE);
+                    emptyResultImage.startAnimation(animation);
+                } else {
+                    emptyResultImage.setVisibility(View.INVISIBLE);
+                    moviesRecyclerView.setAdapter(new MovieListAdapter(movieList, MovieListAdapter.ListType.RECOMMENDATIONS, movieViewModel));
                 }
             }
-        }, new Response.ErrorListener(){
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("my-api",error.getMessage());
-            }
         });
-        requestQueue.add(jsonObjectRequest);
     }
-
-//    public ArrayList<Movie> getMoviesFromAPI(){
-//
-//    }
 }
 
 

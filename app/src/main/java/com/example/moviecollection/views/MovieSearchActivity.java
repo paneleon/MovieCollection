@@ -3,6 +3,7 @@ package com.example.moviecollection.views;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,6 +26,7 @@ import com.example.moviecollection.R;
 import com.example.moviecollection.adapters.MovieListAdapter;
 import com.example.moviecollection.model.Movie;
 import com.example.moviecollection.viewmodel.MovieViewModel;
+import com.google.firebase.database.annotations.Nullable;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -35,7 +37,7 @@ public class MovieSearchActivity extends AppCompatActivity {
 
     //TODO: pagination
 
-    public static final String API_KEY = "";
+
     String searchText;
     ArrayList<Movie> movies = new ArrayList<>();
     RecyclerView moviesRecyclerView;
@@ -56,7 +58,7 @@ public class MovieSearchActivity extends AppCompatActivity {
             public void onClick(View v) {
                 movies.clear();
                 searchText = ((EditText)findViewById(R.id.search_text)).getText().toString();
-                searchMovie(searchText);
+                findMovie(searchText);
             }
         });
 
@@ -66,55 +68,18 @@ public class MovieSearchActivity extends AppCompatActivity {
         emptyResultImage.startAnimation(animation);
     }
 
-    private void searchMovie(String title){
-        
-        String formattedTitle = title.trim().replace(' ', '+');
-        // Jack+Reacher
-        String endpoint = String.format("https://api.themoviedb.org/3/search/movie?api_key=%s&query=%s", API_KEY, formattedTitle);
-
-        RequestQueue requestQueue;
-        requestQueue = Volley.newRequestQueue(this);
-//        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, endpoint,null, new Response.Listener<JSONArray>(){
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, endpoint,null, new Response.Listener<JSONObject>(){
+    private void findMovie(String title){
+        movieViewModel.searchMovie(title).observe(this, new Observer<ArrayList<Movie>>() {
             @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONArray results = response.getJSONArray("results");
-
-                    if (results.length() == 0){
-                        emptyResultImage.setVisibility(View.VISIBLE);
-                        emptyResultImage.startAnimation(animation);
-                    } else {
-                        emptyResultImage.setVisibility(View.INVISIBLE);
-                        for (int i = 0; i < results.length(); i++) {
-                            JSONObject jsonObject = results.getJSONObject(i);
-
-                            Log.d("search movies", "total ==== " + response.getString("total_results"));
-                            Log.d("search movies", "page ==== " + response.getString("page"));
-                            Log.d("search movies", "total pages ==== " + response.getString("total_pages"));
-
-                            Log.d("search movies", "==== " + jsonObject.getString("id"));
-                            movies.add(new Movie(Integer.parseInt(jsonObject.getString("id")),
-                                            jsonObject.getString("title"),
-                                            jsonObject.getString("overview"),
-                                            (jsonObject.has("release_date") ? jsonObject.getString("release_date") : ""),
-                                            Double.parseDouble(jsonObject.getString("vote_average"))
-                                    )
-                            );
-                        }
-                    }
-                } catch (Exception e){
-                    e.printStackTrace();
+            public void onChanged(@Nullable ArrayList<Movie> movies) {
+                if (movies.size() == 0){
+                    emptyResultImage.setVisibility(View.VISIBLE);
+                    emptyResultImage.startAnimation(animation);
+                } else {
+                    emptyResultImage.setVisibility(View.INVISIBLE);
+                    moviesRecyclerView.setAdapter(new MovieListAdapter(movies, MovieListAdapter.ListType.RECOMMENDATIONS, movieViewModel));
                 }
-                moviesRecyclerView.setAdapter(new MovieListAdapter(movies, MovieListAdapter.ListType.RECOMMENDATIONS, movieViewModel));
-            }
-        }, new Response.ErrorListener(){
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("search movies", error.getMessage());
             }
         });
-        requestQueue.add(jsonObjectRequest);
-//        moviesRecyclerView.setAdapter(new MovieListAdapter(movies, MovieListAdapter.ListType.RECOMMENDATIONS));
     }
 }

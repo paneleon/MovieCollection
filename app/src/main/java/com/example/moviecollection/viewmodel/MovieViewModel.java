@@ -1,6 +1,7 @@
 package com.example.moviecollection.viewmodel;
 
 import android.app.Application;
+import android.util.Pair;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -55,6 +56,18 @@ public class MovieViewModel extends AndroidViewModel {
 
     public void setSeen(String key, boolean state){
         movieRepository.setSeen(key, state);
+    }
+
+    public MutableLiveData<ArrayList<Movie>> searchMovie(String title){
+        return movieRepository.searchMovie(title);
+    }
+
+    public Pair<MutableLiveData<ArrayList<Movie>>, Integer> getPopularMovies(int page) {
+        return movieRepository.getPopularMovies(page);
+    }
+
+    public Pair<MutableLiveData<ArrayList<Movie>>, Integer> getTopMovies(int page) {
+        return movieRepository.getTopMovies(page);
     }
 }
 
