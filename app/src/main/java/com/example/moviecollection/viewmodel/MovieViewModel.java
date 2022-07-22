@@ -21,9 +21,6 @@ import java.util.List;
 public class MovieViewModel extends AndroidViewModel {
 
     public MovieRepository movieRepository;
-    private static MutableLiveData<ArrayList<Movie>> movies;
-    private static final String TAG = "MoviesUpdate";
-    ArrayList<Movie> moviesArray = new ArrayList<>();
 
     public MovieViewModel(@NonNull Application application) {
         super(application);

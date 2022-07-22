@@ -16,19 +16,55 @@
         android:layout_height="wrap_content"
         android:text="Register" />
 
+    <!-- Edit text for first name -->
+    <EditText
+        android:id="@+id/reg_first_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter your First Name" />
+
+    <!-- Edit text for last name -->
+    <EditText
+        android:id="@+id/reg_last_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter your Last Name" />
+
+    <!-- Edit text for username -->
+    <EditText
+        android:id="@+id/reg_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter your Username" />
+
+    <!-- Edit text for age -->
+    <EditText
+        android:id="@+id/reg_age"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter your Age" />
+
+    <!-- Spinner for gender -->
+    <Spinner
+        android:id="@+id/reg_gender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/gender_values"
+        android:hint="Choose Your Gender" />
+
     <!-- Edit text for email -->
     <EditText
         android:id="@+id/reg_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter your Email" />
+        android:hint="Enter your Email *" />
 
     <!-- Edit text for password -->
     <EditText
         android:id="@+id/reg_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter your Password"
+        android:hint="Enter your Password *"
         android:inputType="textPassword" />
 
     <!-- Button for register with text "Register" -->

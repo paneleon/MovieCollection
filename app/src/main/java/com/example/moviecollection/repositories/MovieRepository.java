@@ -35,7 +35,6 @@ public class MovieRepository {
     private static final String DB_URL = "https://moviecollection-d43bf-default-rtdb.firebaseio.com/";
     private static final String API_BASE_URL = "https://api.themoviedb.org/3";
     private static final String API_KEY = "";
-    private static String TAG = "Movie";
     FirebaseDatabase database;
     public static DatabaseReference dbRef;
     private MutableLiveData<ArrayList<Movie>> movies = new MutableLiveData<ArrayList<Movie>>();
